@@ -1500,4 +1500,8 @@ body {
         left: -100%;
         transform: scaleX(0);
     }
+
+    .courses__image img {
+        max-height: 120px;
+    }
 }

@@ -1526,4 +1526,7 @@ body {
     -webkit-transform: scaleX(0);
             transform: scaleX(0);
   }
+  .courses__image img {
+    max-height: 120px;
+  }
 }
