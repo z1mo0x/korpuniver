@@ -126,6 +126,10 @@ label {
   margin: 0 auto;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   font-family: Roboto;
   background: #6A287F;
@@ -1523,8 +1527,8 @@ body {
   }
   .header__mobile .header__center {
     left: -100%;
-    -webkit-transform: scaleX(0);
-            transform: scaleX(0);
+    -webkit-transform: scaleX(0.5);
+            transform: scaleX(0.5);
   }
   .courses__image img {
     max-height: 120px;
