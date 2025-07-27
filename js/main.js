@@ -153,6 +153,7 @@ $(document).ready(function () {
     const stage = document.querySelector('.questions__stage');
     const nextBtn = document.querySelector('.next-btn');
     const prevBtn = document.querySelector('.prev-btn');
+
     let currentStep = 0;
 
     function showStep(index) {
@@ -206,4 +207,52 @@ $(document).ready(function () {
     window.addEventListener('resize', checkWidth);
 
     checkWidth();
+
+    const buttonSubmit = document.querySelector("form.questions__wrapper .questions__button");
+    const questionElements = document.querySelectorAll(".questions__item");
+    const validateHtml = document.querySelector(".questions__validation");
+
+    buttonSubmit.addEventListener("click", (e) => {
+        e.preventDefault(); // отменяем отправку формы, пока не пройдена валидация
+
+        validateHtml.classList.remove('active');
+        validateHtml.innerHTML = '';
+        questionElements.forEach(el => {
+            el.classList.remove('empty');
+            const input = el.querySelector('input, select, textarea');
+            if (input) input.classList.remove('empty-field');
+        });
+
+        const inputs = document.querySelectorAll('form.questions__wrapper input[required], form.questions__wrapper select[required], form.questions__wrapper textarea[required]');
+
+        let hasError = false;
+
+        inputs.forEach(input => {
+            if (!input.value.trim()) {
+                hasError = true;
+                input.classList.add("empty-field");
+                const questionItem = input.closest(".questions__item");
+                if (questionItem) {
+                    questionItem.classList.add("empty");
+                }
+            }
+        });
+
+        if (hasError) {
+            validateHtml.classList.add('active');
+            validateHtml.innerHTML = `
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <path d="M12.0002 9C11.6183 9 11.252 9.15804 10.982 9.43934C10.7119 9.72064 10.5602 10.1022 10.5602 10.5V19.5C10.5602 19.8978 10.7119 20.2794 10.982 20.5607C11.252 20.842 11.6183 21 12.0002 21C12.3821 21 12.7484 20.842 13.0184 20.5607C13.2885 20.2794 13.4402 19.8978 13.4402 19.5V10.5C13.4402 10.1022 13.2885 9.72064 13.0184 9.43934C12.7484 9.15804 12.3821 9 12.0002 9ZM12.0002 3C11.6442 3 11.2962 3.10997 11.0002 3.31599C10.7042 3.52202 10.4735 3.81486 10.3372 4.15747C10.201 4.50008 10.1653 4.87708 10.2348 5.24079C10.3042 5.60451 10.4757 5.9386 10.7274 6.20083C10.9791 6.46305 11.2999 6.64163 11.649 6.71397C11.9982 6.78632 12.3601 6.74919 12.689 6.60727C13.0179 6.46536 13.2991 6.22504 13.4968 5.91669C13.6946 5.60835 13.8002 5.24584 13.8002 4.875C13.8002 4.37772 13.6106 3.90081 13.273 3.54917C12.9354 3.19754 12.4776 3 12.0002 3Z" fill="white" />
+          </svg>
+          <p>Ошибка отправки. Заполните обязательные поля</p>
+        `;
+            validateHtml.scrollIntoView({ behavior: 'smooth' });
+            return;
+        }
+
+        console.log('Форма валидна, можно отправлять');
+    });
+
+
+
 });

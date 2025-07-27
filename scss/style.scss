@@ -1338,6 +1338,38 @@ body {
     opacity: 1;
 }
 
+.empty-field {
+    color: #FF3126;
+}
+
+.empty-field::placeholder {
+    color: #FF3126;
+}
+
+.questions__item.empty .questions__name {
+    color: #FF3126;
+}
+
+.questions__validation {
+    transform: scaleX(0);
+    background: #FF3126;
+    transition: all .3s;
+    padding: 13px 24px;
+    width: max-content;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #FFF;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 22px;
+}
+
+.questions__validation.active {
+    transform: scaleX(1);
+}
+
 @keyframes stepActive {
     from {
         transform: scaleX(0);
@@ -2303,6 +2335,15 @@ body {
 
     .questions__accept p {
         font-size: 12px;
+    }
+
+    .questions__validation {
+        width: 100%;
+        margin-top: 20px;
+    }
+
+    .questions__validation svg {
+        flex-shrink: 0;
     }
 
 }

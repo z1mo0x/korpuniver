@@ -78,18 +78,19 @@
         <div class="container">
             <div class="questions__title">Анкета кандидата <br> на прохождение стажировки</div>
             <div class="questions__stage"></div>
+            <div class="questions__validation"></div>
             <form class="questions__wrapper">
                 <div class="questions__contacts step" data-step="1">
                     <div class="questions__blockname">Контактная информация</div>
                     <div class="questions__items">
                         <div class="questions__item">
                             <label for="" class="questions__name">ФИО</label>
-                            <input type="text" placeholder="Иван">
+                            <input required type="text" placeholder="Иван">
                         </div>
                         <div class="questions__item">
                             <label for="" class="questions__name">Дата рождения</label>
                             <div class="questions__item-date">
-                                <input type="date">
+                                <input type="date" required>
                             </div>
                         </div>
                         <div class="questions__item">
@@ -106,7 +107,7 @@
                         </div>
                         <div class="questions__item">
                             <label for="" class="questions__name">Телефон</label>
-                            <input type="tel" class="maskphone" placeholder="+7(999)999-99-99">
+                            <input required type="tel" class="maskphone" placeholder="+7(999)999-99-99">
                         </div>
                         <div class="questions__item">
                             <label for="" class="questions__name">Электронная почта</label>

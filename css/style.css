@@ -1447,6 +1447,63 @@ body {
   opacity: 1;
 }
 
+.empty-field {
+  color: #FF3126;
+}
+
+.empty-field::-webkit-input-placeholder {
+  color: #FF3126;
+}
+
+.empty-field::-moz-placeholder {
+  color: #FF3126;
+}
+
+.empty-field:-ms-input-placeholder {
+  color: #FF3126;
+}
+
+.empty-field::-ms-input-placeholder {
+  color: #FF3126;
+}
+
+.empty-field::placeholder {
+  color: #FF3126;
+}
+
+.questions__item.empty .questions__name {
+  color: #FF3126;
+}
+
+.questions__validation {
+  -webkit-transform: scaleX(0);
+          transform: scaleX(0);
+  background: #FF3126;
+  -webkit-transition: all 0.3s;
+  transition: all 0.3s;
+  padding: 13px 24px;
+  width: -webkit-max-content;
+  width: -moz-max-content;
+  width: max-content;
+  border-radius: 16px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  gap: 10px;
+  color: #FFF;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 22px;
+}
+
+.questions__validation.active {
+  -webkit-transform: scaleX(1);
+          transform: scaleX(1);
+}
+
 @-webkit-keyframes stepActive {
   from {
     -webkit-transform: scaleX(0);
@@ -2301,5 +2358,13 @@ body {
   }
   .questions__accept p {
     font-size: 12px;
+  }
+  .questions__validation {
+    width: 100%;
+    margin-top: 20px;
+  }
+  .questions__validation svg {
+    -ms-flex-negative: 0;
+        flex-shrink: 0;
   }
 }
