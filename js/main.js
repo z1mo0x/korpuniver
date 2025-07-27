@@ -181,7 +181,6 @@ $(document).ready(function () {
 
     function checkWidth() {
         if (window.innerWidth <= 992) {
-            currentStep = 0;
             enableSteps();
         } else {
             disableSteps();
