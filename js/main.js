@@ -212,7 +212,7 @@ $(document).ready(function () {
     const validateHtml = document.querySelector(".questions__validation");
 
     buttonSubmit.addEventListener("click", (e) => {
-        e.preventDefault(); // отменяем отправку формы, пока не пройдена валидация
+        e.preventDefault();
 
         validateHtml.classList.remove('active');
         validateHtml.innerHTML = '';
@@ -249,7 +249,7 @@ $(document).ready(function () {
             return;
         }
 
-        console.log('Форма валидна, можно отправлять');
+        document.querySelector('form.questions__wrapper').submit();
     });
 
 

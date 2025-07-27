@@ -1500,6 +1500,7 @@ body {
 }
 
 .questions__validation.active {
+  margin-top: 20px;
   -webkit-transform: scaleX(1);
           transform: scaleX(1);
 }
