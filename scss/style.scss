@@ -1243,6 +1243,7 @@ body {
     border: 2px dashed #9392B4;
     border-radius: 10px;
     display: flex;
+    position: relative;
     justify-content: center;
     padding: 52px;
     gap: 18px;
@@ -1351,7 +1352,7 @@ body {
 }
 
 .questions__validation {
-    transform: scaleX(0);
+    transform: scale(0);
     background: #FF3126;
     transition: all .3s;
     padding: 13px 24px;
@@ -1368,7 +1369,11 @@ body {
 
 .questions__validation.active {
     margin-top: 20px;
-    transform: scaleX(1);
+    transform: scale(1);
+}
+
+.questions__download.highlight {
+    border: 2px dashed #35346B;
 }
 
 @keyframes stepActive {
@@ -1386,6 +1391,10 @@ body {
 @media (min-width: 992px) {
     .step {
         opacity: 1;
+    }
+
+    .questions__stage {
+        display: none;
     }
 
     .navigation-buttons {

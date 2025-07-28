@@ -1343,6 +1343,7 @@ body {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
+  position: relative;
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
@@ -1476,8 +1477,8 @@ body {
 }
 
 .questions__validation {
-  -webkit-transform: scaleX(0);
-          transform: scaleX(0);
+  -webkit-transform: scale(0);
+          transform: scale(0);
   background: #FF3126;
   -webkit-transition: all 0.3s;
   transition: all 0.3s;
@@ -1501,8 +1502,12 @@ body {
 
 .questions__validation.active {
   margin-top: 20px;
-  -webkit-transform: scaleX(1);
-          transform: scaleX(1);
+  -webkit-transform: scale(1);
+          transform: scale(1);
+}
+
+.questions__download.highlight {
+  border: 2px dashed #35346B;
 }
 
 @-webkit-keyframes stepActive {
@@ -1533,6 +1538,9 @@ body {
 @media (min-width: 992px) {
   .step {
     opacity: 1;
+  }
+  .questions__stage {
+    display: none;
   }
   .navigation-buttons {
     display: none !important;

@@ -252,6 +252,90 @@ $(document).ready(function () {
         document.querySelector('form.questions__wrapper').submit();
     });
 
+    const dropAreas = document.querySelectorAll('.questions__download');
+
+    dropAreas.forEach(dropArea => {
+        const fileInput = dropArea.querySelector('input[type="file"]');
+        const defaultText = dropArea.querySelector('p');
+        let fileList = dropArea.querySelector('.file-list');
+
+        if (!fileList) {
+            fileList = document.createElement('div');
+            fileList.className = 'file-list';
+            dropArea.appendChild(fileList);
+        }
+
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            dropArea.addEventListener(eventName, preventDefaults, false);
+        });
+
+        ['dragenter', 'dragover'].forEach(eventName => {
+            dropArea.addEventListener(eventName, () => dropArea.classList.add('highlight'), false);
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+            dropArea.addEventListener(eventName, () => dropArea.classList.remove('highlight'), false);
+        });
+
+        dropArea.addEventListener('drop', function (e) {
+            preventDefaults(e);
+
+            const dt = e.dataTransfer;
+            const newFiles = dt.files;
+
+            const dataTransfer = new DataTransfer();
+
+            // Добавляем старые файлы
+            for (let i = 0; i < fileInput.files.length; i++) {
+                dataTransfer.items.add(fileInput.files[i]);
+            }
+
+            // Добавляем новые файлы
+            for (let i = 0; i < newFiles.length; i++) {
+                dataTransfer.items.add(newFiles[i]);
+            }
+
+            fileInput.files = dataTransfer.files;
+
+            updateFileList(dropArea, fileInput.files);
+        });
+
+        fileInput.addEventListener('change', function () {
+            updateFileList(dropArea, this.files);
+        });
+
+        function updateFileList(dropArea, files) {
+            fileList.innerHTML = '';
+
+            if (files.length > 0) {
+                defaultText.style.display = 'none';
+
+                for (let i = 0; i < files.length; i++) {
+                    const fileItem = document.createElement('div');
+                    fileItem.className = 'file-item';
+                    fileItem.textContent = `${i + 1}. ${files[i].name} (${formatFileSize(files[i].size)})`;
+                    fileList.appendChild(fileItem);
+                }
+            } else {
+                defaultText.style.display = 'block';
+            }
+        }
+
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+    });
+
+
 
 
 });
