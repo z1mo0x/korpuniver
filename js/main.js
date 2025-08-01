@@ -22,6 +22,7 @@ $(document).ready(function () {
             }
         });
     }
+
     function coursesSlider() {
         const swiper2 = new Swiper('.courses__items ', {
             slidesPerView: 3,
@@ -102,24 +103,56 @@ $(document).ready(function () {
 
         const links = document.querySelectorAll(".teory__slide img");
         const fullsizeButton = document.querySelector(".teory__fullsize");
+        if (links.length > 0) {
+            swiper4.on("slideChange", () => {
+                const index = swiper4.realIndex;
 
-        swiper4.on("slideChange", () => {
-            const index = swiper4.realIndex;
+                fullsizeButton.setAttribute('href', links[index].getAttribute('src'));
+            })
 
-            fullsizeButton.setAttribute('href', links[index].getAttribute('src'));
-        })
+            const fancyboxItems = Array.from(links).map(slide => ({
+                src: slide.getAttribute('src'),
+                type: 'image',
+            }));
 
-        const fancyboxItems = Array.from(links).map(slide => ({
-            src: slide.getAttribute('src'),
-            type: 'image',
-        }));
-
-        fullsizeButton.addEventListener('click', () => {
-            e.preventDefault();
-            $.fancybox.open(fancyboxItems, {}, swiper4.realIndex);
-        })
+            fullsizeButton.addEventListener('click', () => {
+                e.preventDefault();
+                $.fancybox.open(fancyboxItems, {}, swiper4.realIndex);
+            })
+        }
+    }
+    function moduleTestSlider() {
+        const swiper5 = new Swiper('.same__slider', {
+            slidesPerView: 3,
+            spaceBetween: 26,
+            navigation: {
+                nextEl: '.same__next',
+                prevEl: '.same__prev',
+            },
+            breakpoints:
+            {
+                0: {
+                    slidesPerView: 1.2
+                },
+                577: {
+                    slidesPerView: 1.5
+                },
+                767: {
+                    slidesPerView: 2.5
+                },
+                993: {
+                    slidesPerView: 3,
+                    spaceBetween: 20,
+                },
+                1200: {
+                    slidesPerView: 3,
+                    spaceBetween: 36,
+                },
+            }
+        });
     }
 
+    moduleTestSlider()
     teorySlider();
     newsSlider();
     coursesSlider();
