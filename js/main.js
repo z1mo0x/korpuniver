@@ -74,16 +74,59 @@ $(document).ready(function () {
         });
     }
 
+    function teorySlider() {
+        const swiper4 = new Swiper('.teory__slider', {
+            slidesPerView: 1,
+            navigation: {
+                nextEl: '.teory__next',
+                prevEl: '.teory__prev',
+            },
+            effect: 'creative',
+            creativeEffect: {
+                prev: {
+                    opacity: 1,
+                    filter: 'blur(5px)',
+                    scale: 0.5,
+                    translate: ['-50%', 0, -250],
+                    rotate: [0, 0, -15],
+                },
+                next: {
+                    opacity: 0,
+                    filter: 'blur(5px)',
+                    scale: 0.5,
+                    translate: ['50%', 0, 250],
+                    rotate: [0, 0, 15],
+                },
+            }
+        });
 
+        const links = document.querySelectorAll(".teory__slide img");
+        const fullsizeButton = document.querySelector(".teory__fullsize");
+
+        swiper4.on("slideChange", () => {
+            const index = swiper4.realIndex;
+
+            fullsizeButton.setAttribute('href', links[index].getAttribute('src'));
+        })
+
+        const fancyboxItems = Array.from(links).map(slide => ({
+            src: slide.getAttribute('src'),
+            type: 'image',
+        }));
+
+        fullsizeButton.addEventListener('click', () => {
+            e.preventDefault();
+            $.fancybox.open(fancyboxItems, {}, swiper4.realIndex);
+        })
+    }
+
+    teorySlider();
     newsSlider();
     coursesSlider();
     eventsSlider();
 
     const headerWrapper = document.querySelector('.header__mobile .header__center');
     const burgerBtn = document.querySelector('.header__mobile .header__burger');
-
-    console.log(headerWrapper);
-    console.log(burgerBtn);
 
     burgerBtn.addEventListener('click', () => {
         headerWrapper.classList.toggle('menu-open');
@@ -102,8 +145,6 @@ $(document).ready(function () {
     var inputElements = document.querySelectorAll(".maskphone");
 
     for (let inputElement of inputElements) {
-        console.log(inputElement);
-
         inputElement.addEventListener("input", mask);
         inputElement.addEventListener("focus", mask);
         inputElement.addEventListener("blur", mask);
@@ -156,101 +197,106 @@ $(document).ready(function () {
 
     let currentStep = 0;
 
-    function showStep(index) {
-        steps.forEach((step, i) => {
-            step.classList.toggle('active', i === index);
+    if (steps.length > 0) {
+        function showStep(index) {
+            steps.forEach((step, i) => {
+                step.classList.toggle('active', i === index);
+            });
+            stage.textContent = currentStep + 1;
+            prevBtn.style.display = index === 0 ? 'none' : 'inline-block';
+            nextBtn.style.display = index === steps.length - 1 ? 'none' : 'inline-block';
+        }
+
+        function enableSteps() {
+            showStep(currentStep);
+            nextBtn.style.display = currentStep === steps.length - 1 ? 'none' : 'inline-block';
+            prevBtn.style.display = currentStep === 0 ? 'none' : 'inline-block';
+            nextBtn.style.display = (currentStep === steps.length - 1) ? 'none' : 'inline-block';
+            prevBtn.style.display = (currentStep === 0) ? 'none' : 'inline-block';
+        }
+
+        function disableSteps() {
+            steps.forEach(step => step.classList.add('active'));
+            nextBtn.style.display = 'none';
+            prevBtn.style.display = 'none';
+        }
+
+        function checkWidth() {
+            if (window.innerWidth <= 992) {
+                enableSteps();
+            } else {
+                disableSteps();
+            }
+        }
+        nextBtn.addEventListener('click', () => {
+            if (currentStep < steps.length - 1) {
+                currentStep++;
+                showStep(currentStep);
+                window.scrollTo(0, 0);
+            }
         });
-        stage.textContent = currentStep + 1;
-        prevBtn.style.display = index === 0 ? 'none' : 'inline-block';
-        nextBtn.style.display = index === steps.length - 1 ? 'none' : 'inline-block';
+        prevBtn.addEventListener('click', () => {
+            if (currentStep > 0) {
+                currentStep--;
+                showStep(currentStep);
+                window.scrollTo(0, 0);
+            }
+        });
+
+        window.addEventListener('resize', checkWidth);
+
+        checkWidth();
     }
-
-    function enableSteps() {
-        showStep(currentStep);
-        nextBtn.style.display = currentStep === steps.length - 1 ? 'none' : 'inline-block';
-        prevBtn.style.display = currentStep === 0 ? 'none' : 'inline-block';
-        nextBtn.style.display = (currentStep === steps.length - 1) ? 'none' : 'inline-block';
-        prevBtn.style.display = (currentStep === 0) ? 'none' : 'inline-block';
-    }
-
-    function disableSteps() {
-        steps.forEach(step => step.classList.add('active'));
-        nextBtn.style.display = 'none';
-        prevBtn.style.display = 'none';
-    }
-
-    function checkWidth() {
-        if (window.innerWidth <= 992) {
-            enableSteps();
-        } else {
-            disableSteps();
-        }
-    }
-
-    nextBtn.addEventListener('click', () => {
-        if (currentStep < steps.length - 1) {
-            currentStep++;
-            showStep(currentStep);
-            window.scrollTo(0, 0);
-        }
-    });
-
-    prevBtn.addEventListener('click', () => {
-        if (currentStep > 0) {
-            currentStep--;
-            showStep(currentStep);
-            window.scrollTo(0, 0);
-        }
-    });
-
-    window.addEventListener('resize', checkWidth);
-
-    checkWidth();
 
     const buttonSubmit = document.querySelector("form.questions__wrapper .questions__button");
     const questionElements = document.querySelectorAll(".questions__item");
     const validateHtml = document.querySelector(".questions__validation");
 
-    buttonSubmit.addEventListener("click", (e) => {
-        e.preventDefault();
+    try {
 
-        validateHtml.classList.remove('active');
-        validateHtml.innerHTML = '';
-        questionElements.forEach(el => {
-            el.classList.remove('empty');
-            const input = el.querySelector('input, select, textarea');
-            if (input) input.classList.remove('empty-field');
-        });
+        buttonSubmit.addEventListener("click", (e) => {
+            e.preventDefault();
 
-        const inputs = document.querySelectorAll('form.questions__wrapper input[required], form.questions__wrapper select[required], form.questions__wrapper textarea[required]');
+            validateHtml.classList.remove('active');
+            validateHtml.innerHTML = '';
+            questionElements.forEach(el => {
+                el.classList.remove('empty');
+                const input = el.querySelector('input, select, textarea');
+                if (input) input.classList.remove('empty-field');
+            });
 
-        let hasError = false;
+            const inputs = document.querySelectorAll('form.questions__wrapper input[required], form.questions__wrapper select[required], form.questions__wrapper textarea[required]');
 
-        inputs.forEach(input => {
-            if (!input.value.trim()) {
-                hasError = true;
-                input.classList.add("empty-field");
-                const questionItem = input.closest(".questions__item");
-                if (questionItem) {
-                    questionItem.classList.add("empty");
+            let hasError = false;
+
+            inputs.forEach(input => {
+                if (!input.value.trim()) {
+                    hasError = true;
+                    input.classList.add("empty-field");
+                    const questionItem = input.closest(".questions__item");
+                    if (questionItem) {
+                        questionItem.classList.add("empty");
+                    }
                 }
+            });
+
+            if (hasError) {
+                validateHtml.classList.add('active');
+                validateHtml.innerHTML = `
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <path d="M12.0002 9C11.6183 9 11.252 9.15804 10.982 9.43934C10.7119 9.72064 10.5602 10.1022 10.5602 10.5V19.5C10.5602 19.8978 10.7119 20.2794 10.982 20.5607C11.252 20.842 11.6183 21 12.0002 21C12.3821 21 12.7484 20.842 13.0184 20.5607C13.2885 20.2794 13.4402 19.8978 13.4402 19.5V10.5C13.4402 10.1022 13.2885 9.72064 13.0184 9.43934C12.7484 9.15804 12.3821 9 12.0002 9ZM12.0002 3C11.6442 3 11.2962 3.10997 11.0002 3.31599C10.7042 3.52202 10.4735 3.81486 10.3372 4.15747C10.201 4.50008 10.1653 4.87708 10.2348 5.24079C10.3042 5.60451 10.4757 5.9386 10.7274 6.20083C10.9791 6.46305 11.2999 6.64163 11.649 6.71397C11.9982 6.78632 12.3601 6.74919 12.689 6.60727C13.0179 6.46536 13.2991 6.22504 13.4968 5.91669C13.6946 5.60835 13.8002 5.24584 13.8002 4.875C13.8002 4.37772 13.6106 3.90081 13.273 3.54917C12.9354 3.19754 12.4776 3 12.0002 3Z" fill="white" />
+              </svg>
+              <p>Ошибка отправки. Заполните обязательные поля</p>
+            `;
+                validateHtml.scrollIntoView({ behavior: 'smooth' });
+                return;
             }
+
+            document.querySelector('form.questions__wrapper').submit();
         });
+    }
+    catch { }
 
-        if (hasError) {
-            validateHtml.classList.add('active');
-            validateHtml.innerHTML = `
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-            <path d="M12.0002 9C11.6183 9 11.252 9.15804 10.982 9.43934C10.7119 9.72064 10.5602 10.1022 10.5602 10.5V19.5C10.5602 19.8978 10.7119 20.2794 10.982 20.5607C11.252 20.842 11.6183 21 12.0002 21C12.3821 21 12.7484 20.842 13.0184 20.5607C13.2885 20.2794 13.4402 19.8978 13.4402 19.5V10.5C13.4402 10.1022 13.2885 9.72064 13.0184 9.43934C12.7484 9.15804 12.3821 9 12.0002 9ZM12.0002 3C11.6442 3 11.2962 3.10997 11.0002 3.31599C10.7042 3.52202 10.4735 3.81486 10.3372 4.15747C10.201 4.50008 10.1653 4.87708 10.2348 5.24079C10.3042 5.60451 10.4757 5.9386 10.7274 6.20083C10.9791 6.46305 11.2999 6.64163 11.649 6.71397C11.9982 6.78632 12.3601 6.74919 12.689 6.60727C13.0179 6.46536 13.2991 6.22504 13.4968 5.91669C13.6946 5.60835 13.8002 5.24584 13.8002 4.875C13.8002 4.37772 13.6106 3.90081 13.273 3.54917C12.9354 3.19754 12.4776 3 12.0002 3Z" fill="white" />
-          </svg>
-          <p>Ошибка отправки. Заполните обязательные поля</p>
-        `;
-            validateHtml.scrollIntoView({ behavior: 'smooth' });
-            return;
-        }
-
-        document.querySelector('form.questions__wrapper').submit();
-    });
 
     const dropAreas = document.querySelectorAll('.questions__download');
 
